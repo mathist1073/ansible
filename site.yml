@@ -1,9 +1,10 @@
----
+n---
 - hosts: all
   become: true
   pre_tasks: 
 
     - name: Install Updates
+      tags: always
       ansible.builtin.apt:
         upgrade: dist
         update_cache: yes
@@ -14,16 +15,27 @@
   tasks: 
 
   - name: install apache
+    tags: apache,ubuntu
     ansible.builtin.apt:
       name:
         - apache2
         - libapache2-mod-php
     when: ansible_distribution == "Ubuntu"
 
+  - name: copy html file for site
+    tags: apache,ubuntu
+    ansible.builtin.copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+ 
 - hosts: test
   become: true
   tasks:
   - name: install mariab
+    tags: db
     ansible.builtin.apt:
       name:
         - mariadb-server
