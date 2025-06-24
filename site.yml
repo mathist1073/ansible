@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: true
+  pre_tasks: 
+
+    - name: Install Updates
+      ansible.builtin.apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+- hosts: dev
+  become: true
+  tasks: 
+
+  - name: install apache
+    ansible.builtin.apt:
+      name:
+        - apache2
+        - libapache2-mod-php
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: test
+  become: true
+  tasks:
+  - name: install mariab
+    ansible.builtin.apt:
+      name:
+        - mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu" 
