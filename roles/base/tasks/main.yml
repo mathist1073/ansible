@@ -1,0 +1,20 @@
+- name: create user
+  tags: always
+  ansible.builtin.user:
+    name: orion
+    groups: root
+
+- name: add sudoers file for Orion
+  tags: always
+  ansible.builtin.copy:
+    src: sudoer_orion
+    dest: /etc/sudoers.d/orion
+    owner: root
+    group: root
+    mode: 0440
+
+- name: add ssh key for Orion
+  tags: always
+  ansible.builtin.authorized_key:
+    user: orion
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICVQiLZVrAuMp/SkuD9z1fSYdSukP8C3JvICuiCIrZsY mathist@arcadia24" 

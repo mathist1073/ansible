@@ -1,0 +1,6 @@
+- name: install mariadb
+  ansible.builtin.apt:
+    name: mariadb-server
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+    
