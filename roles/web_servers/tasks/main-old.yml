@@ -2,13 +2,16 @@
   tags: apache,ubuntu
   ansible.builtin.apt:
     name:
-      - "{{ apache_package }}"
+      - apache2
+      - libapache2-mod-php
+  when: ansible_distribution == "Ubuntu"
   
 - name: ensure apache is running
   tags: apache, ubuntu
   ansible.builtin.service:
-    name: "{{ apache_service }}"
+    name: apache2
     state: started
+  when: ansible_distribution == "Ubuntu"
   
 - name: copy html file for site
   tags: apache,ubuntu
@@ -19,5 +22,5 @@
     group: root
     mode: 0644 
   when: ansible_distribution == "Ubuntu"
-  notify: restart_apache
+
 
